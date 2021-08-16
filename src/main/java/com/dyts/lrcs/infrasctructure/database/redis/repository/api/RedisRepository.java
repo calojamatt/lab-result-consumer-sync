@@ -8,9 +8,7 @@
  * lab-results
  * RedisRepository.java
  */
-package com.dyts.lrcs.infrasctructure.database.repository.redis.api;
-
-import org.springframework.data.domain.Example;
+package com.dyts.lrcs.infrasctructure.database.redis.repository.api;
 
 import java.util.List;
 import java.util.Map;
@@ -52,27 +50,11 @@ public interface RedisRepository<T, ID> {
     <S extends T> List<S> saveAll(Iterable<S> var1);
 
     /**
-     * clear the database cache of the entity T
-     * */
-    void flush();
-
-    /**
      * return the entity saved
      * @param var1 the data from S to persist
      * @return an object of T persisted
      * */
     T saveAndFlush(T var1);
-
-    /**
-     * Deletes all object who match with the param list
-     * @param var1 a list of object of T to delete massively
-     * */
-    void deleteInBatch(Iterable<T> var1);
-
-    /**
-     * Deletes all object from the database fot the entity T
-     * */
-    void deleteAllInBatch();
 
     /**
      * Deletes an object from the database fot the entity T
@@ -86,11 +68,5 @@ public interface RedisRepository<T, ID> {
      * @return an object of T or null if not found
      * */
     T getOne(ID var1);
-
-    /**
-     * returns all the data in the database who match the entity S
-     * @return a list of object of S
-     * */
-    <S extends T> List<S> findAll(Example<S> var1);
 
 }

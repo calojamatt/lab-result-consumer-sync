@@ -8,7 +8,7 @@
  * lab-results
  * EventMessageConsumer.java
  */
-package com.dyts.lrcs.infrasctructure.config.kafka.consumer;
+package com.dyts.lrcs.infrasctructure.events.kafka.consumer.config;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +17,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -35,6 +36,7 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 @Configuration
+@EnableKafka
 public class EventMessageConsumer {
 
     /** the kafka consumer configuration loaded from properties*/

@@ -8,14 +8,15 @@
  * lab-results
  * EventMessageConsumerManager.java
  */
-package com.dyts.lrcs.infrasctructure.events.kafka.impl;
+package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.impl;
 
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.converters.impl.JsonConverterImpl;
-import com.dyts.lrcs.dtos.UserDTO;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.events.kafka.api.EventMessageConsumerManager;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.api.SynchronizationConsumerManager;
+import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -34,10 +35,13 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @Component
-public class EventMessageConsumerManagerImpl implements EventMessageConsumerManager {
+public class UserSynchronizationConsumerManagerImpl implements SynchronizationConsumerManager {
 
     /** the User Dto converter */
-    private final Converter<UserDTO, UserSynchronizationDto> dtoUserSynchronizationConverter;
+    private final Converter<UserSynchronizationRedis, UserSynchronizationDto> dtoUserSynchronizationConverter;
+
+    /** */
+    private final UserSynchronizationServiceRedis userSynchronizationServiceRedis;
 
     /**
      * receives the message consumed by kafka consumer
@@ -63,7 +67,7 @@ public class EventMessageConsumerManagerImpl implements EventMessageConsumerMana
                 userSynchronizationList.size());
 
         try {
-            //userServiceImpl.saveAll(dtoUserSynchronizationConverter.convert(userSynchronizationList));
+            userSynchronizationServiceRedis.saveAll(dtoUserSynchronizationConverter.convert(userSynchronizationList));
             log.info("User Synchronization process, users synchronized.");
         } catch(Exception e) {
             log.warn("[LAB-RESULT-USER-SYNC-PROCESS] Error trying to insert user list. Detail: {}",

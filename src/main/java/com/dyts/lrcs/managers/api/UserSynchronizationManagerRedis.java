@@ -11,7 +11,7 @@
 package com.dyts.lrcs.managers.api;
 
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
 
 import java.util.List;
 

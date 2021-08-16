@@ -12,7 +12,7 @@ package com.dyts.lrcs.managers;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
 import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
 import com.dyts.lrcs.managers.api.UserSynchronizationManagerRedis;
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,7 @@
  * lab-results
  * UserSynchronizationRedis.java
  */
-package com.dyts.lrcs.infrasctructure.database.entity.redis;
+package com.dyts.lrcs.infrasctructure.database.redis.entity;
 
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
@@ -29,7 +29,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash("USER_SYNCHRONIZATION")
+@RedisHash("USERS")
 public class UserSynchronizationRedis implements Serializable {
 
     /** the document identification id*/

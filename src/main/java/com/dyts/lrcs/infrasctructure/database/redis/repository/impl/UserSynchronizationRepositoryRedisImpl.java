@@ -8,16 +8,21 @@
  * lab-results
  * UserSynchronizationRepositoryRedisImpl.java
  */
-package com.dyts.lrcs.infrasctructure.database.repository.redis.impl;
+package com.dyts.lrcs.infrasctructure.database.redis.repository.impl;
 
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
-import com.dyts.lrcs.infrasctructure.database.repository.redis.api.UserSynchronizationRepositoryRedis;
-import org.springframework.data.domain.Example;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.repository.api.UserSynchronizationRepositoryRedis;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -28,17 +33,25 @@ import java.util.stream.Collectors;
  * @created 26/06/21 11:00 a. m.
  * @since 1.0.0
  */
+@RequiredArgsConstructor
 @Repository
 public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizationRepositoryRedis {
 
     /** the user synchronization key*/
-    private static final String USER_SYNCHRONIZATION_KEY = "USER_SYNCHRONIZATION";
+    private static final String USER_SYNCHRONIZATION_KEY = "USERS";
 
     /** to access Redis cache */
-    private final HashOperations redisOperations;
+    private HashOperations redisOperations;
 
-    /** the repository constructor */
-    public UserSynchronizationRepositoryRedisImpl(RedisTemplate<String, UserSynchronizationRedis> redisTemplate) {
+    /** the Redis template for database operations */
+    @Qualifier("redisTemplate")
+    private final RedisTemplate<String, UserSynchronizationRedis> redisTemplate;
+
+    /**
+     * Init the redis operation
+     * */
+    @PostConstruct
+    protected void init() {
 
         this.redisOperations = redisTemplate.opsForHash();
     }
@@ -98,13 +111,6 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
         return (List<S>) var1;
     }
 
-    /**
-     * clear the database cache of the entity T
-     */
-    @Override
-    public void flush() {
-
-    }
 
     /**
      * return the entity saved
@@ -118,24 +124,6 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
         this.redisOperations.put(USER_SYNCHRONIZATION_KEY, var1.getDni(), var1);
 
         return getOne(var1.getDni());
-    }
-
-    /**
-     * Deletes all object who match with the param list
-     *
-     * @param var1 a list of object of T to delete massively
-     */
-    @Override
-    public void deleteInBatch(Iterable<UserSynchronizationRedis> var1) {
-
-    }
-
-    /**
-     * Deletes all object from the database fot the entity T
-     */
-    @Override
-    public void deleteAllInBatch() {
-
     }
 
     /**
@@ -159,17 +147,5 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
     public UserSynchronizationRedis getOne(String var1) {
 
         return (UserSynchronizationRedis) this.redisOperations.get(USER_SYNCHRONIZATION_KEY, var1);
-    }
-
-    /**
-     * returns all the data in the database who match the entity S
-     *
-     * @param var1 an entity
-     * @return a list of object of S
-     */
-    @Override
-    public <S extends UserSynchronizationRedis> List<S> findAll(Example<S> var1) {
-
-        return Collections.emptyList();
     }
 }

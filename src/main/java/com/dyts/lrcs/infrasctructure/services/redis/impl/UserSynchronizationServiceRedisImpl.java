@@ -10,8 +10,8 @@
  */
 package com.dyts.lrcs.infrasctructure.services.redis.impl;
 
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
-import com.dyts.lrcs.infrasctructure.database.repository.redis.api.UserSynchronizationRepositoryRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.repository.api.UserSynchronizationRepositoryRedis;
 import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

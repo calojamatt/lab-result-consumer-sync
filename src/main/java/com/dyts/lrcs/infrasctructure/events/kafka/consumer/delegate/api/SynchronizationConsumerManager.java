@@ -8,7 +8,7 @@
  * lab-results
  * EventMessageConsumerManager.java
  */
-package com.dyts.lrcs.infrasctructure.events.kafka.api;
+package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.api;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * @created 20/06/21 10:06 p. m.
  * @since 1.0.0
  */
-public interface EventMessageConsumerManager {
+public interface SynchronizationConsumerManager {
 
     /**
      * receives the message consumed by kafka consumer

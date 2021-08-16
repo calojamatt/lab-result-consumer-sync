@@ -8,9 +8,8 @@
  * lab-results
  * RedisDatabaseConfiguration.java
  */
-package com.dyts.lrcs.config;
+package com.dyts.lrcs.infrasctructure.database.redis.config;
 
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +46,7 @@ public class RedisDatabaseConfiguration {
     }
 
     /** redis template for database operations */
-    @Bean
+    @Bean("redisTemplate")
     <T> RedisTemplate<String, T> redisTemplate() {
 
         final RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();

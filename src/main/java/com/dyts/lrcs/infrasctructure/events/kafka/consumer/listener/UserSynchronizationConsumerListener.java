@@ -8,17 +8,18 @@
  * lab-results
  * EventMessageConsumerListener.java
  */
-package com.dyts.lrcs.infrasctructure.config.kafka.consumer;
+package com.dyts.lrcs.infrasctructure.events.kafka.consumer.listener;
 
-import com.dyts.lrcs.infrasctructure.events.kafka.api.EventMessageConsumerManager;
+import com.dyts.lrcs.dtos.UserSynchronizationDto;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.api.SynchronizationConsumerManager;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumerAbstract;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Collections;
 
 /**
  * Class to implement the kafka consumer listener
@@ -31,28 +32,30 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-@EnableKafka
-public class EventMessageConsumerListener {
+public class UserSynchronizationConsumerListener extends KafkaConsumerAbstract<UserSynchronizationDto> {
 
     /** the user synchronization topic name */
     @Value(value = "${lab-result.user-sync.topic.name}")
     private String labResultUserSyncTopicName;
 
     /** the event message consumer manager*/
-    private final EventMessageConsumerManager consumerManager;
+    private final SynchronizationConsumerManager consumerManager;
 
     /**
      * the kafka consumer message listener
-     * @param messages a list of messages consumed
-     * */
+     * Method to receive and process a message from Kafka topic
+     *
+     * @param message the message in String format
+     */
     @KafkaListener(topics = "${lab-result.user-sync.topic.name}",
             groupId = "${kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void consume(List<String> messages) {
+    @Override
+    public void receive(String message) {
 
         log.info("[LAB-RESULT-USER-SYNC-PROCESS-CONSUMER] consuming message from TOPIC [{}], messages [{}]",
                 labResultUserSyncTopicName,
-                messages);
-        consumerManager.receiveMessage(messages);
+                message);
+        consumerManager.receiveMessage(Collections.singletonList(message));
     }
 }

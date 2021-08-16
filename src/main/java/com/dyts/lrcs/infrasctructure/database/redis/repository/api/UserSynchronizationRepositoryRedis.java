@@ -8,9 +8,9 @@
  * lab-results
  * UserSynchronizationRedis.java
  */
-package com.dyts.lrcs.infrasctructure.database.repository.redis.api;
+package com.dyts.lrcs.infrasctructure.database.redis.repository.api;
 
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
 
 /**
  * Interface to define the operations for redis user synchronization

@@ -12,7 +12,7 @@ package com.dyts.lrcs.converters.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

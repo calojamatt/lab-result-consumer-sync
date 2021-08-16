@@ -10,7 +10,7 @@
  */
 package com.dyts.lrcs.infrasctructure.services.redis.api;
 
-import com.dyts.lrcs.infrasctructure.database.entity.redis.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
 
 import java.util.List;
 import java.util.Map;
