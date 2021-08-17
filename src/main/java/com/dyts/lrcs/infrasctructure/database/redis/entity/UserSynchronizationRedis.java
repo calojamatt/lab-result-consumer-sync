@@ -13,7 +13,6 @@ package com.dyts.lrcs.infrasctructure.database.redis.entity;
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -33,7 +32,6 @@ import java.io.Serializable;
 public class UserSynchronizationRedis implements Serializable {
 
     /** the document identification id*/
-    @Id
     private String dni;
 
     /** the document identification type*/

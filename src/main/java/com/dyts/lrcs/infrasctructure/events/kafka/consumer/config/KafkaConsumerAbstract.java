@@ -10,6 +10,8 @@
  */
 package com.dyts.lrcs.infrasctructure.events.kafka.consumer.config;
 
+import com.dyts.lrcs.converters.impl.JsonConverterImpl;
+
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,5 +50,20 @@ public abstract class KafkaConsumerAbstract<T> implements KafkaConsumer<T> {
     public void subscribeEventReceiver(EventReceiver<T> eventReceiver) {
 
         eventReceivers.add(eventReceiver);
+    }
+
+    /**
+     * Method to convert the string message to a custom object defined by
+     * the receiver in a generic form.
+     * {@link JsonConverterImpl} is the class used to convert from String to custom
+     * object type.
+     *
+     * @param message the message in json string format
+     */
+    protected void convertMessage(final String message) {
+
+        eventReceivers.forEach(e ->
+                e.receive(JsonConverterImpl.fromJson(message, e.getBindingClass()))
+        );
     }
 }

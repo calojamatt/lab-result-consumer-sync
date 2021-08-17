@@ -34,8 +34,8 @@ import java.util.Map;
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-// @Repository
-public class ResultLabRepositoryImpl {
+@Repository
+public class ResultLabRepositoryImpl implements ResultLabRepository {
 
     /** the user synchronization key*/
     private static final String TABLE_KEY = "RESULT_LAB";
@@ -61,7 +61,7 @@ public class ResultLabRepositoryImpl {
      *
      * @return a list of object of T
      */
-    //@Override
+    @Override
     public List<ResultLab> findAll() {
 
         final var redisMap = findAllMap();
@@ -74,7 +74,7 @@ public class ResultLabRepositoryImpl {
      *
      * @return a list of object of T
      */
-    //@Override
+    @Override
     public Map<String, ResultLab> findAllMap() {
 
         return this.redisOperations.entries(TABLE_KEY);
@@ -86,8 +86,8 @@ public class ResultLabRepositoryImpl {
      * @param var1 the id to find
      * @return a list of object of T
      */
-    //@Override
-    public List<ResultLab> findAllById(Iterable<Long> var1) {
+    @Override
+    public List<ResultLab> findAllById(Iterable<String> var1) {
 
         return findAll();
     }
@@ -98,7 +98,7 @@ public class ResultLabRepositoryImpl {
      * @param var1 list of data to persist
      * @return a list of object of T persisted
      */
-    //@Override
+    @Override
     public <S extends ResultLab> List<S> saveAll(Iterable<S> var1) {
 
         final var redisHashMap = new HashMap<String, ResultLab>();
@@ -115,7 +115,7 @@ public class ResultLabRepositoryImpl {
      * @param var1 the data from S to persist
      * @return an object of T persisted
      */
-    //@Override
+    @Override
     public ResultLab saveAndFlush(ResultLab var1) {
 
         this.redisOperations.put(TABLE_KEY, var1.getDni(), var1);
@@ -128,7 +128,7 @@ public class ResultLabRepositoryImpl {
      *
      * @param var1 the object to remove
      */
-    //@Override
+    @Override
     public void delete(ResultLab var1) {
 
         this.redisOperations.delete(TABLE_KEY, var1.getDni());
@@ -140,7 +140,7 @@ public class ResultLabRepositoryImpl {
      * @param var1 the ID of the object to find
      * @return an object of T or null if not found
      */
-    //@Override
+    @Override
     public ResultLab getOne(String var1) {
 
         return (ResultLab) this.redisOperations.get(TABLE_KEY, var1);

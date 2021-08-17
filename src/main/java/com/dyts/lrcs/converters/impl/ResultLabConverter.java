@@ -14,6 +14,7 @@ import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.ResultLabDto;
 import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 @Slf4j
+@Component
 public class ResultLabConverter implements Converter<ResultLab, ResultLabDto> {
 
     /**

@@ -43,7 +43,7 @@ public class ResultLabServiceImpl implements ResultLabService {
     @Override
     public void save(ResultLab resultLab) {
 
-        resultLabRepository.save(resultLab);
+        resultLabRepository.saveAndFlush(resultLab);
     }
 
     /**
@@ -90,7 +90,7 @@ public class ResultLabServiceImpl implements ResultLabService {
     @Override
     public ResultLab findById(String id) {
 
-        return resultLabRepository.findById(id).orElse(null);
+        return resultLabRepository.getOne(id);
     }
 
     /**
@@ -101,7 +101,7 @@ public class ResultLabServiceImpl implements ResultLabService {
     @Override
     public void update(ResultLab resultLab) {
 
-        resultLabRepository.save(resultLab);
+        resultLabRepository.saveAndFlush(resultLab);
     }
 
     /**

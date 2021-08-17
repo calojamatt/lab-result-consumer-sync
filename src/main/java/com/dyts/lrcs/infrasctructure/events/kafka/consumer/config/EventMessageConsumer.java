@@ -70,7 +70,6 @@ public class EventMessageConsumer {
 
         final ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.setBatchListener(true);
         return factory;
     }
 

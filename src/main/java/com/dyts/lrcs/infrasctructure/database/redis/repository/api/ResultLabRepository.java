@@ -12,7 +12,6 @@
 package com.dyts.lrcs.infrasctructure.database.redis.repository.api;
 
 import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * Interface to manage crud operations with the database
@@ -22,5 +21,5 @@ import org.springframework.data.repository.CrudRepository;
  * @created 16/08/21 4:14 p. m.
  * @since 1.0.0
  */
-public interface ResultLabRepository extends CrudRepository<ResultLab, String> {
+public interface ResultLabRepository extends RedisRepository<ResultLab, String> {
 }

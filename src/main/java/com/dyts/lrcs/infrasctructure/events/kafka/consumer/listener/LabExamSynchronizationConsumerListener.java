@@ -12,14 +12,11 @@ package com.dyts.lrcs.infrasctructure.events.kafka.consumer.listener;
 
 import com.dyts.lrcs.dtos.ResultLabDto;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumerAbstract;
-import com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.api.SynchronizationConsumerManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 /**
  * Class to implement the kafka consumer listener
@@ -38,9 +35,6 @@ public class LabExamSynchronizationConsumerListener extends KafkaConsumerAbstrac
     @Value(value = "${lab-result.sync.topic.name}")
     private String labResultSyncTopicName;
 
-    /** the event message consumer manager*/
-    private final SynchronizationConsumerManager consumerManager;
-
     /**
      * the kafka consumer message listener
      * Method to receive and process a message from Kafka topic
@@ -56,6 +50,6 @@ public class LabExamSynchronizationConsumerListener extends KafkaConsumerAbstrac
         log.info("[LAB-RESULT-USER-PROCESS-CONSUMER] consuming message from TOPIC [{}], messages [{}]",
                 labResultSyncTopicName,
                 message);
-        consumerManager.receiveMessage(Collections.singletonList(message));
+        convertMessage(message);
     }
 }

@@ -12,16 +12,18 @@ package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.impl;
 
 
 import com.dyts.lrcs.converters.api.Converter;
-import com.dyts.lrcs.converters.impl.JsonConverterImpl;
 import com.dyts.lrcs.dtos.ResultLabDto;
 import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
-import com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.api.SynchronizationConsumerManager;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.EventReceiver;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumer;
 import com.dyts.lrcs.infrasctructure.services.redis.api.ResultLabService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,7 +37,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class LabExamSynchronizationConsumerManagerImpl implements SynchronizationConsumerManager {
+public class LabExamSynchronizationConsumerManagerImpl implements EventReceiver<ResultLabDto> {
 
     /** the Result Lab Dto converter */
     private final Converter<ResultLab, ResultLabDto> resultLabConverter;
@@ -43,32 +45,41 @@ public class LabExamSynchronizationConsumerManagerImpl implements Synchronizatio
     /** the result lab service object */
     private final ResultLabService resultLabService;
 
+    /** the kafka consumer */
+    private final KafkaConsumer<ResultLabDto> labDtoKafkaConsumer;
+
     /**
+     * Post construct to subscribe the class to receive events from kafka
+     * */
+    @PostConstruct
+    void init() {
+        this.labDtoKafkaConsumer.subscribeEventReceiver(this);
+    }
+
+
+    /**
+     * Method that should be implemented by event receiver to
+     * obtain the message in a custom type format
      * receives the message consumed by kafka consumer
      *
-     * @param messages the message received
-     * */
+     * @param message the message received in custom type format
+     */
     @Async
-    public void receiveMessage(List<String> messages) {
+    @Override
+    public void receive(ResultLabDto message) {
 
-        log.debug("[LAB-RESULT-SYNC-PROCESS-CONSUMER] message received");
-        processMessage(messages);
+        log.debug("[LAB-RESULT-SYNC-PROCESS-CONSUMER] processing messages received. Messages to process [{}]", message);
+        processMessage(Collections.singletonList(message));
     }
 
     /**
      * process the message received and insert user data into database
      * @param messages the message to process
      * */
-    private void processMessage(final List<String> messages) {
-
-        final var resultLabDtoList =
-                JsonConverterImpl.fromJson(messages, ResultLabDto.class);
-        log.info("[LAB-RESULT-SYNC-PROCESS-CONSUMER] processing messages received. Messages to process [{}]",
-                resultLabDtoList.size());
+    private void processMessage(final List<ResultLabDto> messages) {
 
         try {
-            resultLabService.saveAll(resultLabConverter.convert(resultLabDtoList));
-            log.info("User Synchronization process, users synchronized.");
+            resultLabService.saveAll(resultLabConverter.convert(messages));
         } catch(Exception e) {
             log.warn("[LAB-RESULT-SYNC-PROCESS] Error trying to insert exam result. Detail: {}",
                     e.getMessage());

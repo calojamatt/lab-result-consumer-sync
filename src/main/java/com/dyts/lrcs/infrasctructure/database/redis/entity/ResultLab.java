@@ -13,7 +13,7 @@ package com.dyts.lrcs.infrasctructure.database.redis.entity;
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -30,10 +30,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @RedisHash("RESULT_LAB")
-public class ResultLab {
+public class ResultLab implements Serializable {
 
     /** The table id */
-    @Id
     private String id;
 
     /** The patient code of the lab result */

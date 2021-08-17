@@ -12,16 +12,19 @@ package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.impl;
 
 
 import com.dyts.lrcs.converters.api.Converter;
-import com.dyts.lrcs.converters.impl.JsonConverterImpl;
+import com.dyts.lrcs.dtos.ResultLabDto;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
 import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
-import com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.api.SynchronizationConsumerManager;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.EventReceiver;
+import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumer;
 import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,7 +38,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @Component
-public class UserSynchronizationConsumerManagerImpl implements SynchronizationConsumerManager {
+public class UserSynchronizationConsumerManagerImpl implements EventReceiver<UserSynchronizationDto> {
 
     /** the User Dto converter */
     private final Converter<UserSynchronizationRedis, UserSynchronizationDto> dtoUserSynchronizationConverter;
@@ -43,31 +46,39 @@ public class UserSynchronizationConsumerManagerImpl implements SynchronizationCo
     /** */
     private final UserSynchronizationServiceRedis userSynchronizationServiceRedis;
 
+    /** the kafka consumer */
+    private final KafkaConsumer<UserSynchronizationDto> dtoKafkaConsumer;
+
+    /**
+     * Post construct to subscribe the class to receive events from kafka
+     * */
+    @PostConstruct
+    void init() {
+        this.dtoKafkaConsumer.subscribeEventReceiver(this);
+    }
+
     /**
      * receives the message consumed by kafka consumer
      *
      * @param messages the message received
      * */
     @Async
-    public void receiveMessage(List<String> messages) {
+    @Override
+    public void receive(UserSynchronizationDto messages) {
 
-        log.debug("[LAB-RESULT-USER-SYNC-PROCESS-CONSUMER] message received");
-        processMessage(messages);
+        log.debug("[LAB-RESULT-USER-SYNC-PROCESS-CONSUMER] processing messages received. Messages to process [{}]",
+                messages);
+        processMessage(Collections.singletonList(messages));
     }
 
     /**
      * process the message received and insert user data into database
      * @param messages the message to process
      * */
-    private void processMessage(final List<String> messages) {
-
-        final var userSynchronizationList =
-                JsonConverterImpl.fromJson(messages, UserSynchronizationDto.class);
-        log.info("[LAB-RESULT-USER-SYNC-PROCESS-CONSUMER] processing messages received. Messages to process [{}]",
-                userSynchronizationList.size());
+    private void processMessage(final List<UserSynchronizationDto> messages) {
 
         try {
-            userSynchronizationServiceRedis.saveAll(dtoUserSynchronizationConverter.convert(userSynchronizationList));
+            userSynchronizationServiceRedis.saveAll(dtoUserSynchronizationConverter.convert(messages));
             log.info("User Synchronization process, users synchronized.");
         } catch(Exception e) {
             log.warn("[LAB-RESULT-USER-SYNC-PROCESS] Error trying to insert user list. Detail: {}",
