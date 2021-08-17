@@ -11,11 +11,10 @@
 package com.dyts.lrcs.infrasctructure.database.redis.repository.impl;
 
 import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
 import com.dyts.lrcs.infrasctructure.database.redis.repository.api.ResultLabRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,15 +36,11 @@ import java.util.Map;
 @Repository
 public class ResultLabRepositoryImpl implements ResultLabRepository {
 
-    /** the user synchronization key*/
-    private static final String TABLE_KEY = "RESULT_LAB";
-
     /** to access Redis cache */
-    private HashOperations redisOperations;
+    private ListOperations<String, ResultLab> redisOperations;
 
     /** the Redis template for database operations */
-    @Qualifier("redisTemplate")
-    private final RedisTemplate<String, UserSynchronizationRedis> redisTemplate;
+    private final RedisTemplate<String, ResultLab> redisTemplate;
 
     /**
      * Init the redis operation
@@ -53,7 +48,7 @@ public class ResultLabRepositoryImpl implements ResultLabRepository {
     @PostConstruct
     protected void init() {
 
-        this.redisOperations = redisTemplate.opsForHash();
+        this.redisOperations = redisTemplate.opsForList();
     }
 
     /**
@@ -77,7 +72,7 @@ public class ResultLabRepositoryImpl implements ResultLabRepository {
     @Override
     public Map<String, ResultLab> findAllMap() {
 
-        return this.redisOperations.entries(TABLE_KEY);
+        return null;
     }
 
     /**
@@ -101,10 +96,7 @@ public class ResultLabRepositoryImpl implements ResultLabRepository {
     @Override
     public <S extends ResultLab> List<S> saveAll(Iterable<S> var1) {
 
-        final var redisHashMap = new HashMap<String, ResultLab>();
-        var1.forEach(u -> redisHashMap.put(u.getDni(), u));
-
-        this.redisOperations.putAll(TABLE_KEY, redisHashMap);
+        var1.forEach(u -> this.redisOperations.leftPush(u.getPatientCode(), u));
 
         return (List<S>) var1;
     }
@@ -118,8 +110,7 @@ public class ResultLabRepositoryImpl implements ResultLabRepository {
     @Override
     public ResultLab saveAndFlush(ResultLab var1) {
 
-        this.redisOperations.put(TABLE_KEY, var1.getDni(), var1);
-
+        this.redisOperations.leftPush(var1.getPatientCode(), var1);
         return getOne(var1.getId());
     }
 
@@ -131,7 +122,7 @@ public class ResultLabRepositoryImpl implements ResultLabRepository {
     @Override
     public void delete(ResultLab var1) {
 
-        this.redisOperations.delete(TABLE_KEY, var1.getDni());
+        this.redisOperations.leftPop(var1.getDni());
     }
 
     /**
@@ -143,6 +134,6 @@ public class ResultLabRepositoryImpl implements ResultLabRepository {
     @Override
     public ResultLab getOne(String var1) {
 
-        return (ResultLab) this.redisOperations.get(TABLE_KEY, var1);
+        return this.redisOperations.rightPop(var1);
     }
 }

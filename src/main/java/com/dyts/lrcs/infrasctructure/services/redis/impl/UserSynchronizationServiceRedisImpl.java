@@ -10,7 +10,7 @@
  */
 package com.dyts.lrcs.infrasctructure.services.redis.impl;
 
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
 import com.dyts.lrcs.infrasctructure.database.redis.repository.api.UserSynchronizationRepositoryRedis;
 import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @param user the user to persis
      */
     @Override
-    public void save(UserSynchronizationRedis user) {
+    public void save(UserSynchronization user) {
 
         userSynchronizationRepositoryRedis.saveAndFlush(user);
 
@@ -53,7 +53,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @return a list of UserSynchronization
      */
     @Override
-    public List<UserSynchronizationRedis> saveAll(List<UserSynchronizationRedis> userSynchronizationList) {
+    public List<UserSynchronization> saveAll(List<UserSynchronization> userSynchronizationList) {
 
         return userSynchronizationRepositoryRedis.saveAll(userSynchronizationList);
     }
@@ -64,7 +64,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @return a map of user with the id as a key
      */
     @Override
-    public List<UserSynchronizationRedis> findAll() {
+    public List<UserSynchronization> findAll() {
 
         return userSynchronizationRepositoryRedis.findAll();
     }
@@ -75,7 +75,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @return a map of user with the id as a key
      */
     @Override
-    public Map<String, UserSynchronizationRedis> findAllMap() {
+    public Map<String, UserSynchronization> findAllMap() {
 
         return userSynchronizationRepositoryRedis.findAllMap();
     }
@@ -87,7 +87,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @return a map of user with the id as a key
      */
     @Override
-    public List<UserSynchronizationRedis> findAllByParameter(List<String> paramList) {
+    public List<UserSynchronization> findAllByParameter(List<String> paramList) {
 
         return userSynchronizationRepositoryRedis.findAllById(paramList);
     }
@@ -99,7 +99,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @return an object of user synchronization or null if not found
      */
     @Override
-    public UserSynchronizationRedis findById(String id) {
+    public UserSynchronization findById(String id) {
 
         return userSynchronizationRepositoryRedis.getOne(id);
     }
@@ -110,7 +110,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @param user the user to be updated
      */
     @Override
-    public void update(UserSynchronizationRedis user) {
+    public void update(UserSynchronization user) {
 
         save(user);
     }
@@ -121,7 +121,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
      * @param user the user object to delete
      */
     @Override
-    public void delete(UserSynchronizationRedis user) {
+    public void delete(UserSynchronization user) {
 
         userSynchronizationRepositoryRedis.delete(user);
     }

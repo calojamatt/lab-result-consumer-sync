@@ -10,7 +10,7 @@
  */
 package com.dyts.lrcs.infrasctructure.database.redis.repository.impl;
 
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
 import com.dyts.lrcs.infrasctructure.database.redis.repository.api.UserSynchronizationRepositoryRedis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +45,7 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
 
     /** the Redis template for database operations */
     @Qualifier("redisTemplate")
-    private final RedisTemplate<String, UserSynchronizationRedis> redisTemplate;
+    private final RedisTemplate<String, UserSynchronization> redisTemplate;
 
     /**
      * Init the redis operation
@@ -62,7 +62,7 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @return a list of object of T
      */
     @Override
-    public List<UserSynchronizationRedis> findAll() {
+    public List<UserSynchronization> findAll() {
 
         final var redisMap = findAllMap();
 
@@ -75,7 +75,7 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @return a list of object of T
      */
     @Override
-    public Map<String, UserSynchronizationRedis> findAllMap() {
+    public Map<String, UserSynchronization> findAllMap() {
 
         return this.redisOperations.entries(USER_SYNCHRONIZATION_KEY);
     }
@@ -87,10 +87,10 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @return a list of object of T
      */
     @Override
-    public List<UserSynchronizationRedis> findAllById(Iterable<String> var1) {
+    public List<UserSynchronization> findAllById(Iterable<String> var1) {
 
         return findAll().stream()
-                .filter(userSynchronizationRedis -> userSynchronizationRedis.getStatus().equals("NOT_SYNCHRONIZED"))
+                .filter(userSynchronizationRedis -> userSynchronizationRedis.getState().equals("NOT_SYNCHRONIZED"))
                 .collect(Collectors.toList());
     }
 
@@ -101,9 +101,9 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @return a list of object of T persisted
      */
     @Override
-    public <S extends UserSynchronizationRedis> List<S> saveAll(Iterable<S> var1) {
+    public <S extends UserSynchronization> List<S> saveAll(Iterable<S> var1) {
 
-        final var userSynchronizationMap = new HashMap<String, UserSynchronizationRedis>();
+        final var userSynchronizationMap = new HashMap<String, UserSynchronization>();
         var1.forEach(u -> userSynchronizationMap.put(u.getDni(), u));
 
         this.redisOperations.putAll(USER_SYNCHRONIZATION_KEY, userSynchronizationMap);
@@ -119,7 +119,7 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @return an object of T persisted
      */
     @Override
-    public UserSynchronizationRedis saveAndFlush(UserSynchronizationRedis var1) {
+    public UserSynchronization saveAndFlush(UserSynchronization var1) {
 
         this.redisOperations.put(USER_SYNCHRONIZATION_KEY, var1.getDni(), var1);
 
@@ -132,7 +132,7 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @param userSynchronization the id to remove
      */
     @Override
-    public void delete(UserSynchronizationRedis userSynchronization) {
+    public void delete(UserSynchronization userSynchronization) {
 
         this.redisOperations.delete(USER_SYNCHRONIZATION_KEY, userSynchronization.getDni());
     }
@@ -144,8 +144,8 @@ public class UserSynchronizationRepositoryRedisImpl implements UserSynchronizati
      * @return an object of T or null if not found
      */
     @Override
-    public UserSynchronizationRedis getOne(String var1) {
+    public UserSynchronization getOne(String var1) {
 
-        return (UserSynchronizationRedis) this.redisOperations.get(USER_SYNCHRONIZATION_KEY, var1);
+        return (UserSynchronization) this.redisOperations.get(USER_SYNCHRONIZATION_KEY, var1);
     }
 }

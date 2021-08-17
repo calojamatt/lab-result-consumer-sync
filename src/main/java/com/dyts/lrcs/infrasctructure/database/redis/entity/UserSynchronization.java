@@ -6,7 +6,7 @@
  * All right reserved.
  *
  * lab-results
- * UserSynchronizationRedis.java
+ * UserSynchronization.java
  */
 package com.dyts.lrcs.infrasctructure.database.redis.entity;
 
@@ -29,16 +29,21 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @RedisHash("USERS")
-public class UserSynchronizationRedis implements Serializable {
+public class UserSynchronization implements Serializable {
 
     /** the document identification id*/
     private String dni;
 
+    /** the username */
+    private String username;
+
+    private String password;
+
     /** the document identification type*/
-    private String dniType;
+    private String documentType;
 
     /** the patient first name */
-    private String firstName;
+    private String name;
 
     /** the patient second name */
     private String lastName;
@@ -46,6 +51,12 @@ public class UserSynchronizationRedis implements Serializable {
     /** the patient email*/
     private String email;
 
-    /** the status of the sync process for the record */
-    private String status;
+    /** the status of the user */
+    private String state;
+
+    /** the role of the user */
+    private String rol;
+
+    /** the source of the message*/
+    private String source;
 }

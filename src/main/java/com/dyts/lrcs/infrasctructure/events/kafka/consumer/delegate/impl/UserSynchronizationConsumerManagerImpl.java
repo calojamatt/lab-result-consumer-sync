@@ -12,12 +12,12 @@ package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.impl;
 
 
 import com.dyts.lrcs.converters.api.Converter;
-import com.dyts.lrcs.dtos.ResultLabDto;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronizationRedis;
+import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.EventReceiver;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumer;
 import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
+import com.dyts.lrcs.managers.api.UserSynchronizationManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -40,14 +40,11 @@ import java.util.List;
 @Component
 public class UserSynchronizationConsumerManagerImpl implements EventReceiver<UserSynchronizationDto> {
 
-    /** the User Dto converter */
-    private final Converter<UserSynchronizationRedis, UserSynchronizationDto> dtoUserSynchronizationConverter;
-
-    /** */
-    private final UserSynchronizationServiceRedis userSynchronizationServiceRedis;
-
     /** the kafka consumer */
     private final KafkaConsumer<UserSynchronizationDto> dtoKafkaConsumer;
+
+    /** The user synchronization manager to sync data*/
+    private final UserSynchronizationManager userSynchronizationManager;
 
     /**
      * Post construct to subscribe the class to receive events from kafka
@@ -68,21 +65,6 @@ public class UserSynchronizationConsumerManagerImpl implements EventReceiver<Use
 
         log.debug("[LAB-RESULT-USER-SYNC-PROCESS-CONSUMER] processing messages received. Messages to process [{}]",
                 messages);
-        processMessage(Collections.singletonList(messages));
-    }
-
-    /**
-     * process the message received and insert user data into database
-     * @param messages the message to process
-     * */
-    private void processMessage(final List<UserSynchronizationDto> messages) {
-
-        try {
-            userSynchronizationServiceRedis.saveAll(dtoUserSynchronizationConverter.convert(messages));
-            log.info("User Synchronization process, users synchronized.");
-        } catch(Exception e) {
-            log.warn("[LAB-RESULT-USER-SYNC-PROCESS] Error trying to insert user list. Detail: {}",
-                    e.getMessage());
-        }
+        userSynchronizationManager.usersToSynchronize(Collections.singletonList(messages));
     }
 }
