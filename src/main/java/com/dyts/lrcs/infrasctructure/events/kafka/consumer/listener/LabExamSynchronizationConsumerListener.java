@@ -11,6 +11,7 @@
 package com.dyts.lrcs.infrasctructure.events.kafka.consumer.listener;
 
 import com.dyts.lrcs.dtos.ResultLabDto;
+import com.dyts.lrcs.dtos.ResultLabKeyValue;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumerAbstract;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class LabExamSynchronizationConsumerListener extends KafkaConsumerAbstract<ResultLabDto> {
+public class LabExamSynchronizationConsumerListener extends KafkaConsumerAbstract<ResultLabKeyValue> {
 
     /** the user synchronization topic name */
     @Value(value = "${lab-result.sync.topic.name}")

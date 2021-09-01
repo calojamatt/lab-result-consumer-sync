@@ -8,9 +8,10 @@
  * lab-results
  * UserSynchronization.java
  */
-package com.dyts.lrcs.infrasctructure.database.redis.repository.api;
+package com.dyts.lrcs.infrasctructure.database.postgres.repository;
 
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Interface to define the operations for redis user synchronization
@@ -20,5 +21,5 @@ import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
  * @created 26/06/21 10:51 a. m.
  * @since 1.0.0
  */
-public interface UserSynchronizationRepositoryRedis extends RedisRepository<UserSynchronization, String> {
+public interface UserSynchronizationRepository extends JpaRepository<UserSynchronization, String> {
 }

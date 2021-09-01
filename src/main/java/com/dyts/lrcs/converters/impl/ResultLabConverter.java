@@ -12,11 +12,12 @@ package com.dyts.lrcs.converters.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.ResultLabDto;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.ResultLab;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +42,7 @@ public class ResultLabConverter implements Converter<ResultLab, ResultLabDto> {
     public ResultLab convert(ResultLabDto resultLabDto) {
 
         return ResultLab.builder()
+                .withId(UUID.randomUUID().toString())
                 .withPatientCode(resultLabDto.getPatientCode())
                 .withFirstName(resultLabDto.getFirstName())
                 .withLastName(resultLabDto.getLastName())
@@ -49,7 +51,7 @@ public class ResultLabConverter implements Converter<ResultLab, ResultLabDto> {
                 .withCreationHour(resultLabDto.getCreationHour())
                 .withDocumentType(resultLabDto.getDocumentType())
                 .withDni(resultLabDto.getDni())
-                .withPatientClteCode(resultLabDto.getPatientClteCode())
+                .withPatientClientCode(resultLabDto.getPatientClientCode())
                 .withExamCode(resultLabDto.getExamCode())
                 .withExamName(resultLabDto.getExamName())
                 .withBalance(resultLabDto.getBalance())

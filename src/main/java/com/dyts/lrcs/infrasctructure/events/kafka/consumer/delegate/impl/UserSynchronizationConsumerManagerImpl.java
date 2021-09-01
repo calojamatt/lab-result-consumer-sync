@@ -11,13 +11,10 @@
 package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.impl;
 
 
-import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.EventReceiver;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumer;
-import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
-import com.dyts.lrcs.managers.api.UserSynchronizationManager;
+import com.dyts.lrcs.managers.UserSynchronizationManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -25,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Class to manage the message received from kafka topic

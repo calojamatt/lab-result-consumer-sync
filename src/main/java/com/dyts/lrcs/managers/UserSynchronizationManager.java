@@ -8,10 +8,10 @@
  * lab-results
  * UserSynchronizationManagerRedis.java
  */
-package com.dyts.lrcs.managers.api;
+package com.dyts.lrcs.managers;
 
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
 
 import java.util.List;
 

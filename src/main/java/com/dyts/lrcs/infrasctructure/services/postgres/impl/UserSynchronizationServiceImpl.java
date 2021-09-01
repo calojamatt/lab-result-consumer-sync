@@ -6,13 +6,13 @@
  * All right reserved.
  *
  * lab-results
- * UserSynchronizationServiceRedisImpl.java
+ * UserSynchronizationServiceImpl.java
  */
-package com.dyts.lrcs.infrasctructure.services.redis.impl;
+package com.dyts.lrcs.infrasctructure.services.postgres.impl;
 
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
-import com.dyts.lrcs.infrasctructure.database.redis.repository.api.UserSynchronizationRepositoryRedis;
-import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.repository.UserSynchronizationRepository;
+import com.dyts.lrcs.infrasctructure.services.postgres.api.UserSynchronizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +29,10 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class UserSynchronizationServiceRedisImpl implements UserSynchronizationServiceRedis {
+public class UserSynchronizationServiceImpl implements UserSynchronizationService {
 
     /** the redis user synchronization repository */
-    private final UserSynchronizationRepositoryRedis userSynchronizationRepositoryRedis;
+    private final UserSynchronizationRepository userSynchronizationRepository;
 
     /**
      * persist an User to redis database
@@ -42,7 +42,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public void save(UserSynchronization user) {
 
-        userSynchronizationRepositoryRedis.saveAndFlush(user);
+        userSynchronizationRepository.saveAndFlush(user);
 
     }
 
@@ -55,7 +55,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public List<UserSynchronization> saveAll(List<UserSynchronization> userSynchronizationList) {
 
-        return userSynchronizationRepositoryRedis.saveAll(userSynchronizationList);
+        return userSynchronizationRepository.saveAll(userSynchronizationList);
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public List<UserSynchronization> findAll() {
 
-        return userSynchronizationRepositoryRedis.findAll();
+        return userSynchronizationRepository.findAll();
     }
 
     /**
@@ -77,7 +77,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public Map<String, UserSynchronization> findAllMap() {
 
-        return userSynchronizationRepositoryRedis.findAllMap();
+        return null;
     }
 
     /**
@@ -89,7 +89,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public List<UserSynchronization> findAllByParameter(List<String> paramList) {
 
-        return userSynchronizationRepositoryRedis.findAllById(paramList);
+        return userSynchronizationRepository.findAllById(paramList);
     }
 
     /**
@@ -101,7 +101,7 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public UserSynchronization findById(String id) {
 
-        return userSynchronizationRepositoryRedis.getOne(id);
+        return userSynchronizationRepository.getOne(id);
     }
 
     /**
@@ -123,6 +123,6 @@ public class UserSynchronizationServiceRedisImpl implements UserSynchronizationS
     @Override
     public void delete(UserSynchronization user) {
 
-        userSynchronizationRepositoryRedis.delete(user);
+        userSynchronizationRepository.delete(user);
     }
 }

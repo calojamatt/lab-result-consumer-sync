@@ -11,12 +11,10 @@
 package com.dyts.lrcs.infrasctructure.events.kafka.consumer.delegate.impl;
 
 
-import com.dyts.lrcs.converters.api.Converter;
-import com.dyts.lrcs.dtos.ResultLabDto;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
+import com.dyts.lrcs.dtos.ResultLabKeyValue;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.EventReceiver;
 import com.dyts.lrcs.infrasctructure.events.kafka.consumer.config.KafkaConsumer;
-import com.dyts.lrcs.infrasctructure.services.redis.api.ResultLabService;
+import com.dyts.lrcs.managers.LabExamSynchronizationManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Class to manage the message received from kafka topic
@@ -37,16 +34,13 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class LabExamSynchronizationConsumerManagerImpl implements EventReceiver<ResultLabDto> {
-
-    /** the Result Lab Dto converter */
-    private final Converter<ResultLab, ResultLabDto> resultLabConverter;
-
-    /** the result lab service object */
-    private final ResultLabService resultLabService;
+public class LabExamSynchronizationConsumerManagerImpl implements EventReceiver<ResultLabKeyValue> {
 
     /** the kafka consumer */
-    private final KafkaConsumer<ResultLabDto> labDtoKafkaConsumer;
+    private final KafkaConsumer<ResultLabKeyValue> labDtoKafkaConsumer;
+
+    /** The manager for lab exam synchronization */
+    private final LabExamSynchronizationManager labExamSynchronizationManager;
 
     /**
      * Post construct to subscribe the class to receive events from kafka
@@ -66,23 +60,9 @@ public class LabExamSynchronizationConsumerManagerImpl implements EventReceiver<
      */
     @Async
     @Override
-    public void receive(ResultLabDto message) {
+    public void receive(ResultLabKeyValue message) {
 
         log.debug("[LAB-RESULT-SYNC-PROCESS-CONSUMER] processing messages received. Messages to process [{}]", message);
-        processMessage(Collections.singletonList(message));
-    }
-
-    /**
-     * process the message received and insert user data into database
-     * @param messages the message to process
-     * */
-    private void processMessage(final List<ResultLabDto> messages) {
-
-        try {
-            resultLabService.saveAll(resultLabConverter.convert(messages));
-        } catch(Exception e) {
-            log.warn("[LAB-RESULT-SYNC-PROCESS] Error trying to insert exam result. Detail: {}",
-                    e.getMessage());
-        }
+        labExamSynchronizationManager.synchronizeLabExams(Collections.singletonList(message));
     }
 }

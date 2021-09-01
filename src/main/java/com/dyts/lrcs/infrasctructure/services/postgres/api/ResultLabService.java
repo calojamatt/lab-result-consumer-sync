@@ -8,12 +8,13 @@
  * lab-result-consumer-sync
  * ResultLabService.java
  */
-package com.dyts.lrcs.infrasctructure.services.redis.api;
+package com.dyts.lrcs.infrasctructure.services.postgres.api;
 
-import com.dyts.lrcs.infrasctructure.database.redis.entity.ResultLab;
+
+
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.ResultLab;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface to define business logic method for the labs exams Redis service
@@ -60,6 +61,13 @@ public interface ResultLabService {
     ResultLab findById(String id);
 
     /**
+     * finds an exam in redis database
+     * @param patientCode the id to find
+     * @return a list of result lab or null if not found
+     * */
+    List<ResultLab> findByPatientCode(String patientCode);
+
+    /**
      * update an exam in redis database
      * @param resultLab the exam to be updated
      * */
@@ -70,4 +78,11 @@ public interface ResultLabService {
      * @param resultLab the object of the exam to delete
      * */
     void delete(ResultLab resultLab);
+
+    /**
+     * remove an exam in redis database
+     * @param patientCode the patientCode of the exam to search
+     * @return 0 if patient exists otherwise 1
+     * */
+    long countByPatientCode(String patientCode);
 }

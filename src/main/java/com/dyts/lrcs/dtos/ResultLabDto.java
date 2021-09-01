@@ -58,8 +58,8 @@ public class ResultLabDto {
     /** The patient document identity */
     private String dni;
 
-    /** The patient clte code */
-    private String patientClteCode;
+    /** The patient client code */
+    private String patientClientCode;
 
     /** The exam code of the result */
     private String examCode;

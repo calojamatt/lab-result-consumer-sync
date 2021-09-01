@@ -8,9 +8,10 @@
  * lab-results
  * UserSynchronizationServiceRedis.java
  */
-package com.dyts.lrcs.infrasctructure.services.redis.api;
+package com.dyts.lrcs.infrasctructure.services.postgres.api;
 
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
+
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import java.util.Map;
  * @created 26/06/21 12:16 p. m.
  * @since 1.0.0
  */
-public interface UserSynchronizationServiceRedis {
+public interface UserSynchronizationService {
 
     /**
      * persist an User to redis database

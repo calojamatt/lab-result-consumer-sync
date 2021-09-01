@@ -8,13 +8,13 @@
  * lab-results
  * UserSynchronizationManagerRedisImpl.java
  */
-package com.dyts.lrcs.managers;
+package com.dyts.lrcs.managers.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.redis.entity.UserSynchronization;
-import com.dyts.lrcs.infrasctructure.services.redis.api.UserSynchronizationServiceRedis;
-import com.dyts.lrcs.managers.api.UserSynchronizationManager;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.services.postgres.api.UserSynchronizationService;
+import com.dyts.lrcs.managers.UserSynchronizationManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class UserSynchronizationManagerImpl implements UserSynchronizationManager {
 
     /** the user service for redis */
-    private final UserSynchronizationServiceRedis userSynchronizationServiceRedis;
+    private final UserSynchronizationService userSynchronizationService;
 
     /** the converter for UserSynchronization */
     private final Converter<UserSynchronization, UserSynchronizationDto> userSynchronizationConverter;
@@ -58,7 +58,7 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
 
         var usersToSave = userSynchronizationRedisList.stream()
                 .map(user -> {
-                    var userFound = userSynchronizationServiceRedis.findById(user.getDni());
+                    var userFound = userSynchronizationService.findById(user.getDni());
                     return Objects.isNull(userFound) ? user : null;
                 })
                 .filter(Objects::nonNull)
@@ -80,7 +80,7 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
     public List<UserSynchronization> synchronizeUserRedis(List<UserSynchronization> userSynchronizationRedisList) {
 
         try {
-            userSynchronizationServiceRedis.saveAll(userSynchronizationRedisList);
+            userSynchronizationService.saveAll(userSynchronizationRedisList);
             log.info("User Synchronization process, users synchronized.");
             return userSynchronizationRedisList;
         } catch(Exception e) {
