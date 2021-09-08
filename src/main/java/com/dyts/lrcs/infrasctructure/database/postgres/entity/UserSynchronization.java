@@ -31,7 +31,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "results")
 public class UserSynchronization implements Serializable {
 
     /** the document identification id*/

@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -51,8 +50,9 @@ public class ResultLabDto {
     private Date creationDate;
 
     /** The creation hour of the exam */
-    private LocalTime creationHour;
+    private String creationHour;
 
+    /** The patient document type */
     private String documentType;
 
     /** The patient document identity */
@@ -72,6 +72,30 @@ public class ResultLabDto {
 
     /** The company document number associated to the exam result*/
     private String companyDni;
+
+    /** the code of the exam result */
+    private int code;
+
+    /** the analysis code of the exam result */
+    private String analysisCode;
+
+    /** the analysis of the patient */
+    private String analysis;
+
+    /** the analysis result of the exam*/
+    private String results;
+
+    /** the minimum reference value of the exam */
+    private String minimum;
+
+    /** the intermediate reference value of the exam */
+    private String intermediate;
+
+    /** the maximum reference value of the exam */
+    private String maximum;
+
+    /** the unit measure of the exams */
+    private String units;
 
     /** the source of the message*/
     private String source;

@@ -36,7 +36,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "result_lab")
+@Table(name = "result_lab", schema = "results")
 public class ResultLab implements Serializable {
 
     /** The table id */
@@ -65,7 +65,7 @@ public class ResultLab implements Serializable {
 
     /** The creation hour of the exam */
     @Column(name = "creation_hour")
-    private LocalTime creationHour;
+    private String creationHour;
 
     private String documentType;
 
@@ -86,14 +86,46 @@ public class ResultLab implements Serializable {
     private String examName;
 
     /** The balance of the company */
-    @Column(name = "balance")
+    @Column
     private Double balance;
 
     /** The company document number associated to the exam result*/
     @Column(name = "company_dni")
     private String companyDni;
 
+    /** the code of the exam result */
+    @Column
+    private int code;
+
+    /** the analysis code of the exam result */
+    @Column
+    private String analysisCode;
+
+    /** the analysis of the patient */
+    @Column
+    private String analysis;
+
+    /** the analysis result of the exam*/
+    @Column
+    private String results;
+
+    /** the minimum reference value of the exam */
+    @Column
+    private String minimum;
+
+    /** the intermediate reference value of the exam */
+    @Column
+    private String intermediate;
+
+    /** the maximum reference value of the exam */
+    @Column
+    private String maximum;
+
+    /** the unit measure of the exams */
+    @Column
+    private String units;
+
     /** the source of the message*/
-    @Column(name = "source")
+    @Column
     private String source;
 }

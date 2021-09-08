@@ -11,6 +11,7 @@
 package com.dyts.lrcs.converters.api;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Interface to convert class T to Class K
@@ -34,5 +35,8 @@ public interface Converter<T, K> {
      * @param k a list of k to convert
      * @return t a list of new objects
      * */
-    List<T> convert(List<K> k);
+    default List<T> convert(List<K> k) {
+
+        return k.stream().map(this::convert).collect(Collectors.toList());
+    }
 }

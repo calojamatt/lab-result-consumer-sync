@@ -101,7 +101,7 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
     @Override
     public UserSynchronization findById(String id) {
 
-        return userSynchronizationRepository.getOne(id);
+        return userSynchronizationRepository.findById(id).orElse(null);
     }
 
     /**

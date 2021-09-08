@@ -56,21 +56,15 @@ public class ResultLabConverter implements Converter<ResultLab, ResultLabDto> {
                 .withExamName(resultLabDto.getExamName())
                 .withBalance(resultLabDto.getBalance())
                 .withCompanyDni(resultLabDto.getCompanyDni())
+                .withCode(resultLabDto.getCode())
+                .withAnalysisCode(resultLabDto.getAnalysisCode())
+                .withAnalysis(resultLabDto.getAnalysis())
+                .withResults(resultLabDto.getResults())
+                .withMinimum(resultLabDto.getMinimum())
+                .withIntermediate(resultLabDto.getIntermediate())
+                .withMaximum(resultLabDto.getMaximum())
+                .withUnits(resultLabDto.getUnits())
                 .withSource(resultLabDto.getSource())
                 .build();
-    }
-
-    /**
-     * Transform Class k to Class t
-     *
-     * @param k a list of k to convert
-     * @return t a list of new objects
-     */
-    @Override
-    public List<ResultLab> convert(List<ResultLabDto> k) {
-
-        log.debug("Result Lab synchronization process, converting ResultLabDtoList to ResultLabList, " +
-                "transforming [{}] records.", k.size());
-        return k.stream().map(this::convert).collect(Collectors.toList());
     }
 }

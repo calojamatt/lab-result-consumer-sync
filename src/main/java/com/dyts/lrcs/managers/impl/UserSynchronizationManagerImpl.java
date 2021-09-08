@@ -53,10 +53,10 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
     @Override
     public List<UserSynchronization> usersToSynchronize(List<UserSynchronizationDto> userSynchronizationDtoList) {
 
-        var userSynchronizationRedisList =
+        var userSynchronizationList =
                 userSynchronizationConverter.convert(userSynchronizationDtoList);
 
-        var usersToSave = userSynchronizationRedisList.stream()
+        var usersToSave = userSynchronizationList.stream()
                 .map(user -> {
                     var userFound = userSynchronizationService.findById(user.getDni());
                     return Objects.isNull(userFound) ? user : null;
