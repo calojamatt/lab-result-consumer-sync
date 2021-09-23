@@ -13,12 +13,13 @@ package com.dyts.lrcs.converters.impl;
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.ResultLabDto;
 import com.dyts.lrcs.infrasctructure.database.postgres.entity.ResultLab;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Class to transform a ResultLabDto into a ResultLab
@@ -29,8 +30,12 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class ResultLabConverter implements Converter<ResultLab, ResultLabDto> {
+
+    /** the generic mapper */
+    private final ModelMapper modelMapper;
 
     /**
      * Transform Class k to Class t
@@ -41,30 +46,12 @@ public class ResultLabConverter implements Converter<ResultLab, ResultLabDto> {
     @Override
     public ResultLab convert(ResultLabDto resultLabDto) {
 
-        return ResultLab.builder()
-                .withId(UUID.randomUUID().toString())
-                .withPatientCode(resultLabDto.getPatientCode())
-                .withFirstName(resultLabDto.getFirstName())
-                .withLastName(resultLabDto.getLastName())
-                .withFullName(resultLabDto.getFullName())
-                .withCreationDate(resultLabDto.getCreationDate())
-                .withCreationHour(resultLabDto.getCreationHour())
-                .withDocumentType(resultLabDto.getDocumentType())
-                .withDni(resultLabDto.getDni())
-                .withPatientClientCode(resultLabDto.getPatientClientCode())
-                .withExamCode(resultLabDto.getExamCode())
-                .withExamName(resultLabDto.getExamName())
-                .withBalance(resultLabDto.getBalance())
-                .withCompanyDni(resultLabDto.getCompanyDni())
-                .withCode(resultLabDto.getCode())
-                .withAnalysisCode(resultLabDto.getAnalysisCode())
-                .withAnalysis(resultLabDto.getAnalysis())
-                .withResults(resultLabDto.getResults())
-                .withMinimum(resultLabDto.getMinimum())
-                .withIntermediate(resultLabDto.getIntermediate())
-                .withMaximum(resultLabDto.getMaximum())
-                .withUnits(resultLabDto.getUnits())
-                .withSource(resultLabDto.getSource())
-                .build();
+        final ResultLab resultLab = modelMapper.map(resultLabDto, ResultLab.class);
+        resultLab.setId(UUID.randomUUID().toString());
+        resultLab.setValidSign(Objects.nonNull(resultLabDto.getValidSign()) ? resultLabDto.getValidSign() : null);
+        resultLab.setResultImage(Objects.nonNull(resultLabDto.getResultImage()) ? resultLabDto.getResultImage() : null);
+        resultLab.setSecondSign(Objects.nonNull(resultLabDto.getSecondSign()) ? resultLabDto.getSecondSign() : null);
+
+        return resultLab;
     }
 }

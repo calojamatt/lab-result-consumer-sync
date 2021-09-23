@@ -34,32 +34,11 @@ public class ResultLabDto {
     /** The table id */
     private Long id;
 
-    /** The patient code of the lab result */
-    private String patientCode;
+    private String patientPrint;
 
-    /** The first name of the patient */
-    private String firstName;
+    private String groupExamCode;
 
-    /** The last name of the patient*/
-    private String lastName;
-
-    /** The full name of the patient */
-    private String fullName;
-
-    /** The creation date of the exam */
-    private Date creationDate;
-
-    /** The creation hour of the exam */
-    private String creationHour;
-
-    /** The patient document type */
-    private String documentType;
-
-    /** The patient document identity */
-    private String dni;
-
-    /** The patient client code */
-    private String patientClientCode;
+    private String groupName;
 
     /** The exam code of the result */
     private String examCode;
@@ -67,36 +46,127 @@ public class ResultLabDto {
     /** The exam name of the result */
     private String examName;
 
-    /** The balance of the company */
-    private Double balance;
-
-    /** The company document number associated to the exam result*/
-    private String companyDni;
-
-    /** the code of the exam result */
-    private int code;
+    private String examReg;
 
     /** the analysis code of the exam result */
     private String analysisCode;
 
-    /** the analysis of the patient */
-    private String analysis;
+    /** The creation date of the exam */
+    private Date creationDate;
 
-    /** the analysis result of the exam*/
-    private String results;
+    private String locationCode;
 
-    /** the minimum reference value of the exam */
-    private String minimum;
+    private byte[] validSign;
 
-    /** the intermediate reference value of the exam */
-    private String intermediate;
+    private byte[] resultImage;
 
-    /** the maximum reference value of the exam */
-    private String maximum;
+    private byte[] secondSign;
 
     /** the unit measure of the exams */
     private String units;
 
-    /** the source of the message*/
+    /** the minimum reference value of the exam */
+    private String minimum;
+
+    /** the maximum reference value of the exam */
+    private String maximum;
+
+    /** the intermediate reference value of the exam */
+    private String intermediate;
+
+    /** The full name of the patient */
+    private String fullName;
+
+    private String profession;
+
+    private String tarProf;
+
+    private String currentForm;
+
+    private String totalForms;
+
+    private String cCostDescription;
+
+    private String secondSignName;
+
+    private String secondSignProf;
+
+    private String tarSecondSignProf;
+
+    private String secondSignDir;
+
+    private String validated;
+
+    private String reviewed;
+
+    /** the analysis of the patient */
+    private String analysisF;
+
+    private String unitsRes;
+
+    private String resultF;
+
+    private String resultQ;
+
+    private String resultV;
+
+    private String finalResult;
+
+    private String mic;
+
+    private String interP;
+
+    /** The patient code of the lab result */
+    private String patientCode;
+
+    private String history;
+
+    /** The patient document identity */
+    private String dni;
+
+    private Date enterDate;
+
+    private String printDate;
+
+    /** The first name of the patient*/
+    private String firstName;
+
+    /** The last name of the patient*/
+    private String lastName;
+
+    /** The creation hour of the exam */
+    private String hour;
+
+    /** The patient document type */
+    private String documentType;
+
+    /** The patient clte code */
+    private String clientCode;
+
+    /** The balance of the company */
+    private String balance;
+
+    /** The company document number associated to the exam result*/
+    private String companyDni;
+
+    private String patientName;
+
+    private String doctorName;
+
+    private String telephone;
+
+    private String ageSex;
+
+    private String locationName;
+
+    private String clientName;
+
+    private String reason;
+
+    private String bebDet;
+
+    private String nFac;
+
+    /** the sync source */
     private String source;
 }

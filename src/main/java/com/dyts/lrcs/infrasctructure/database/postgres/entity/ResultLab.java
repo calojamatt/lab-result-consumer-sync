@@ -15,12 +15,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -43,89 +39,196 @@ public class ResultLab implements Serializable {
     @Id
     private String id;
 
-    /** The patient code of the lab result */
-    @Column(name = "patient_code")
-    private String patientCode;
+    @Column(name = "pacimpri")
+    private String patientPrint;
 
-    /** The first name of the patient */
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "gruexa_cod")
+    private String groupExamCode;
 
-    /** The last name of the patient*/
-    @Column(name = "last_name")
-    private String lastName;
-
-    /** The full name of the patient */
-    @Column(name = "full_name")
-    private String fullName;
-
-    /** The creation date of the exam */
-    @Column(name = "creation_date")
-    private Date creationDate;
-
-    /** The creation hour of the exam */
-    @Column(name = "creation_hour")
-    private String creationHour;
-
-    private String documentType;
-
-    /** The patient document identity */
-    @Column(name = "dni")
-    private String dni;
-
-    /** The patient clte code */
-    @Column(name = "patient_client_code")
-    private String patientClientCode;
+    @Column(name = "nomgru")
+    private String groupName;
 
     /** The exam code of the result */
-    @Column(name = "exam_code")
+    @Column(name = "examen_cod")
     private String examCode;
 
     /** The exam name of the result */
-    @Column(name = "exam_name")
+    @Column(name = "nomexa")
     private String examName;
 
+    @Column(name = "reg_exa")
+    private Integer examReg;
+
+    /** the analysis code of the exam result */
+    @Column(name = "analito_cod")
+    private String analysisCode;
+
+    /** The creation date of the exam */
+    @Column(name = "fecha")
+    private Date creationDate;
+
+    @Column(name = "sede_codigo")
+    private String locationCode;
+
+    @Column(name = "firma_valido")
+    private byte[] validSign;
+
+    @Column(name = "imagen_resultado")
+    private byte[] resultImage;
+
+    @Column(name = "sgda_firma")
+    private byte[] secondSign;
+
+    /** the unit measure of the exams */
+    @Column(name = "unidades")
+    private String units;
+
+    /** the minimum reference value of the exam */
+    @Column(name = "minimo")
+    private String minimum;
+
+    /** the maximum reference value of the exam */
+    @Column(name = "maximo")
+    private String maximum;
+
+    /** the intermediate reference value of the exam */
+    @Column(name = "intermedio")
+    private String intermediate;
+
+    /** The full name of the patient */
+    @Column(name = "nombre_completo")
+    private String fullName;
+
+    @Column(name = "profesion")
+    private String profession;
+
+    @Column(name = "tar_prof")
+    private String tarProf;
+
+    @Column(name = "forma_actual")
+    private Integer currentForm;
+
+    @Column(name = "total_formas")
+    private Integer totalForms;
+
+    @Column(name = "ccosto_desc")
+    private String cCostDescription;
+
+    @Column(name = "nombre_segunda_firma")
+    private String secondSignName;
+
+    @Column(name = "prof_segda_firma")
+    private String secondSignProf;
+
+    @Column(name = "tar_prof_sgda_firma")
+    private String tarSecondSignProf;
+
+    @Column(name = "dir_sgda_firma")
+    private String secondSignDir;
+
+    @Column(name = "validado")
+    private String validated;
+
+    @Column(name = "revisado")
+    private String reviewed;
+
+    /** the analysis of the patient */
+    @Column(name = "analitof")
+    private String analysisF;
+    @Column(name = "unidad_res")
+    private String unitsRes;
+
+    @Column(name = "resultadof")
+    private String resultF;
+
+    @Column(name = "resultadoq")
+    private String resultQ;
+
+    @Column(name = "resultadov")
+    private String resultV;
+
+    @Column(name = "resultadofinal")
+    private String finalResult;
+
+    @Column(name = "mic")
+    private String mic;
+
+    @Column(name = "interp")
+    private String interP;
+
+    /** The patient code of the lab result */
+    @Column(name = "paciente_cod")
+    private String patientCode;
+
+    @Column(name = "historia")
+    private String history;
+
+    /** The patient document identity */
+    @Column(name = "nit")
+    private String dni;
+
+    @Column(name = "fec_ing")
+    private String enterDate;
+
+    @Column(name = "fec_imp")
+    private Date printDate;
+
+    /** The first name of the patient*/
+    @Column(name = "nom1")
+    private String firstName;
+
+    /** The last name of the patient*/
+    @Column(name = "ape1")
+    private String lastName;
+
+    /** The creation hour of the exam */
+    @Column(name = "hora")
+    private String hour;
+
+    /** The patient document type */
+    @Column(name = "tipodcto_cod")
+    private String documentType;
+
+    /** The patient clte code */
+    @Column(name = "clte_codigo")
+    private String clientCode;
+
     /** The balance of the company */
-    @Column
+    @Column(name = "saldo")
     private Double balance;
 
     /** The company document number associated to the exam result*/
-    @Column(name = "company_dni")
+    @Column(name = "empresa")
     private String companyDni;
 
-    /** the code of the exam result */
-    @Column
-    private int code;
+    @Column(name = "nombre_pac")
+    private String patientName;
 
-    /** the analysis code of the exam result */
-    @Column
-    private String analysisCode;
+    @Column(name = "nombre_med")
+    private String doctorName;
 
-    /** the analysis of the patient */
-    @Column
-    private String analysis;
+    @Column(name = "telefono")
+    private String telephone;
 
-    /** the analysis result of the exam*/
-    @Column
-    private String results;
+    @Column(name = "edad_sexo")
+    private String ageSex;
 
-    /** the minimum reference value of the exam */
-    @Column
-    private String minimum;
+    @Column(name = "nombre_sede")
+    private String locationName;
 
-    /** the intermediate reference value of the exam */
-    @Column
-    private String intermediate;
+    @Column(name = "nombre_clte")
+    private String clientName;
 
-    /** the maximum reference value of the exam */
-    @Column
-    private String maximum;
+    @Column(name = "razon")
+    private String reason;
 
-    /** the unit measure of the exams */
-    @Column
-    private String units;
+    @Column(name = "cama_det")
+    private String bebDet;
 
-    /** the source of the message*/
+    @Column(name = "n_fac")
+    private String nFac;
+
+    /** the sync source of the message */
     @Column
     private String source;
 }
