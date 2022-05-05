@@ -11,7 +11,7 @@
 package com.dyts.lrcs.managers;
 
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
 
 import java.util.List;
 
@@ -28,18 +28,18 @@ public interface UserSynchronizationManager {
     /**
      * synchronize user with redis database
      *
-     * @param userSynchronizationRedisList the user list to synchronize
-     * @return a List<{@link UserSynchronization}> with users synchronized
+     * @param usersRedisList the user list to synchronize
+     * @return a List<{@link Users}> with users synchronized
      */
-    List<UserSynchronization> synchronizeUserRedis(List<UserSynchronization> userSynchronizationRedisList);
+    List<Users> synchronizeUser(List<Users> usersRedisList);
 
     /**
      * take the UserSynchronization list get from postgres database and transform in a list of
-     * {@link UserSynchronization} to synchronize
+     * {@link Users} to synchronize
      *
      * @param userSynchronizationList an UserSynchronization list with users to synchronize with redis
-     * @return a List<{@link UserSynchronization}> with users to synchronize
+     * @return a List<{@link Users}> with users to synchronize
      * */
-    List<UserSynchronization> usersToSynchronize(List<UserSynchronizationDto> userSynchronizationList);
+    List<Users> usersToSynchronize(List<UserSynchronizationDto> userSynchronizationList);
 
 }

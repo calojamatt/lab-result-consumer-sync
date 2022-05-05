@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,7 +44,7 @@ public class LabExamSynchronizationConsumerListener extends KafkaConsumerAbstrac
      * @param message the message in String format
      */
     @KafkaListener(topics = "${lab-result.sync.topic.name}",
-            groupId = "${kafka.consumer.group-id}",
+            groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
     @Override
     public void receive(String message) {

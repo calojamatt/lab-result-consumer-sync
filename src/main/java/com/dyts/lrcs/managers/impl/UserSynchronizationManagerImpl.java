@@ -12,7 +12,9 @@ package com.dyts.lrcs.managers.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UsersSynchronization;
+import com.dyts.lrcs.infrasctructure.services.postgres.api.UserService;
 import com.dyts.lrcs.infrasctructure.services.postgres.api.UserSynchronizationService;
 import com.dyts.lrcs.managers.UserSynchronizationManager;
 import lombok.RequiredArgsConstructor;
@@ -38,34 +40,39 @@ import java.util.stream.Collectors;
 public class UserSynchronizationManagerImpl implements UserSynchronizationManager {
 
     /** the user service for redis */
+    private final UserService userService;
+
     private final UserSynchronizationService userSynchronizationService;
 
     /** the converter for UserSynchronization */
-    private final Converter<UserSynchronization, UserSynchronizationDto> userSynchronizationConverter;
+    private final Converter<Users, UserSynchronizationDto> userSynchronizationConverter;
+
+    /** used to transform Users into UsersSynchronization */
+    private final Converter<UsersSynchronization, Users> synchronizationUsersConverter;
 
     /**
      * take the UserSynchronization list get from postgres database and transform in a list of
-     * {@link UserSynchronization} to synchronize
+     * {@link Users} to synchronize
      *
      * @param userSynchronizationDtoList an UserSynchronizationDto list with users to synchronize with redis
-     * @return a List<{@link UserSynchronization}> with users to synchronize
+     * @return a List<{@link Users}> with users to synchronize
      * */
     @Override
-    public List<UserSynchronization> usersToSynchronize(List<UserSynchronizationDto> userSynchronizationDtoList) {
+    public List<Users> usersToSynchronize(List<UserSynchronizationDto> userSynchronizationDtoList) {
 
         var userSynchronizationList =
                 userSynchronizationConverter.convert(userSynchronizationDtoList);
 
         var usersToSave = userSynchronizationList.stream()
                 .map(user -> {
-                    var userFound = userSynchronizationService.findById(user.getDni());
+                    var userFound = userService.findById(user.getDni());
                     return Objects.isNull(userFound) ? user : null;
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         if ( !usersToSave.isEmpty()) {
-            synchronizeUserRedis(usersToSave);
+            usersToSave = synchronizeUser(usersToSave);
         }
         return usersToSave;
     }
@@ -73,16 +80,17 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
     /**
      * synchronize user with redis database
      *
-     * @param userSynchronizationRedisList the user list to synchronize
-     * @return a List<{@link UserSynchronization}> with users synchronized
+     * @param usersList the user list to synchronize
+     * @return a List<{@link Users}> with users synchronized
      */
     @Override
-    public List<UserSynchronization> synchronizeUserRedis(List<UserSynchronization> userSynchronizationRedisList) {
+    public List<Users> synchronizeUser(List<Users> usersList) {
 
         try {
-            userSynchronizationService.saveAll(userSynchronizationRedisList);
+            usersList = userService.saveAll(usersList);
+            userSynchronizationService.saveAll(synchronizationUsersConverter.convert(usersList));
             log.info("User Synchronization process, users synchronized.");
-            return userSynchronizationRedisList;
+            return usersList;
         } catch(Exception e) {
             log.warn("[LAB-RESULT-USER-SYNC-PROCESS] Error trying to insert user list. Detail: {}",
                     e.getMessage());

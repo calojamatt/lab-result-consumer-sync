@@ -42,9 +42,8 @@ public class UserSynchronizationConsumerListener extends KafkaConsumerAbstract<U
      * @param message the message in String format
      */
     @KafkaListener(topics = "${lab-result.user-sync.topic.name}",
-            groupId = "${kafka.consumer.group-id}",
+            groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-
     @Override
     public void receive(String message) {
 

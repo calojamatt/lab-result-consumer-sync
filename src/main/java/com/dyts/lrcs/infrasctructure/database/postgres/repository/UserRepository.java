@@ -11,7 +11,6 @@
 package com.dyts.lrcs.infrasctructure.database.postgres.repository;
 
 import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.UsersSynchronization;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -22,5 +21,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @created 26/06/21 10:51 a. m.
  * @since 1.0.0
  */
-public interface UserSynchronizationRepository extends JpaRepository<UsersSynchronization, String> {
+public interface UserRepository extends JpaRepository<Users, String> {
 }

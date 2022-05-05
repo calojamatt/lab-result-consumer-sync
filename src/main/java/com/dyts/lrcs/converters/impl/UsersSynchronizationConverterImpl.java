@@ -12,7 +12,8 @@ package com.dyts.lrcs.converters.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.UsersSynchronization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,10 +34,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class UserSynchronizationRedisConverterImpl implements Converter<UserSynchronization, UserSynchronizationDto> {
-
-    /** the password encoder for the user */
-    private final PasswordEncoder passwordEncoder;
+public class UsersSynchronizationConverterImpl implements Converter<UsersSynchronization, Users> {
 
     /**
      * Transform Class k to Class t
@@ -45,19 +43,14 @@ public class UserSynchronizationRedisConverterImpl implements Converter<UserSync
      * @return t the new object
      */
     @Override
-    public UserSynchronization convert(UserSynchronizationDto userSynchronization) {
+    public UsersSynchronization convert(Users userSynchronization) {
 
-        return UserSynchronization.builder()
+        return UsersSynchronization.builder()
                 .withDni(userSynchronization.getDni())
-                .withPassword(passwordEncoder.encode(userSynchronization.getDni()))
-                .withUsername(userSynchronization.getDni())
-                .withDocumentType(userSynchronization.getDniType())
-                .withName(userSynchronization.getFirstName())
+                .withDocumentType(userSynchronization.getDocumentType())
+                .withFirstName(userSynchronization.getName())
                 .withLastName(userSynchronization.getLastName())
                 .withEmail(userSynchronization.getEmail())
-                .withState("A")
-                .withRol("USUARIO")
-                .withSource(userSynchronization.getSource())
                 .build();
     }
 
@@ -68,7 +61,7 @@ public class UserSynchronizationRedisConverterImpl implements Converter<UserSync
      * @return List<UserSynchronization> a list of new objects
      */
     @Override
-    public List<UserSynchronization> convert(List<UserSynchronizationDto> userSynchronizations) {
+    public List<UsersSynchronization> convert(List<Users> userSynchronizations) {
 
         log.debug("User Synchronization process, converting userSynchronizationList to UserSynchronizationRedisList, " +
                 "transforming [{}] records.", userSynchronizations.size());

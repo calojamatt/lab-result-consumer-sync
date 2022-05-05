@@ -41,7 +41,7 @@ public class EventMessageConsumer {
 
     /** the kafka consumer configuration loaded from properties*/
     @Bean
-    @ConfigurationProperties(prefix = "kafka.consumer")
+    @ConfigurationProperties(prefix = "spring.kafka.consumer")
     public Map<String, String> kafkaConsumerConfig() {
 
         return new HashMap<>();
@@ -70,6 +70,7 @@ public class EventMessageConsumer {
 
         final ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.setConcurrency(3);
         return factory;
     }
 

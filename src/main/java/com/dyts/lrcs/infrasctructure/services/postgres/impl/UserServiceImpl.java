@@ -6,13 +6,14 @@
  * All right reserved.
  *
  * lab-results
- * UserSynchronizationServiceImpl.java
+ * UserServiceImpl.java
  */
 package com.dyts.lrcs.infrasctructure.services.postgres.impl;
 
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.UserSynchronization;
+import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrasctructure.database.postgres.repository.UserRepository;
 import com.dyts.lrcs.infrasctructure.database.postgres.repository.UserSynchronizationRepository;
-import com.dyts.lrcs.infrasctructure.services.postgres.api.UserSynchronizationService;
+import com.dyts.lrcs.infrasctructure.services.postgres.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,10 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class UserSynchronizationServiceImpl implements UserSynchronizationService {
+public class UserServiceImpl implements UserService {
 
-    /** the redis user synchronization repository */
-    private final UserSynchronizationRepository userSynchronizationRepository;
+    /** the user repository */
+    private final UserRepository userRepository;
 
     /**
      * persist an User to redis database
@@ -40,22 +41,22 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @param user the user to persis
      */
     @Override
-    public void save(UserSynchronization user) {
+    public void save(Users user) {
 
-        userSynchronizationRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
 
     }
 
     /**
      * persist a list of user to redis database
      *
-     * @param userSynchronizationList the user to persis
+     * @param usersList the user to persis
      * @return a list of UserSynchronization
      */
     @Override
-    public List<UserSynchronization> saveAll(List<UserSynchronization> userSynchronizationList) {
+    public List<Users> saveAll(List<Users> usersList) {
 
-        return userSynchronizationRepository.saveAll(userSynchronizationList);
+        return userRepository.saveAll(usersList);
     }
 
     /**
@@ -64,9 +65,9 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @return a map of user with the id as a key
      */
     @Override
-    public List<UserSynchronization> findAll() {
+    public List<Users> findAll() {
 
-        return userSynchronizationRepository.findAll();
+        return userRepository.findAll();
     }
 
     /**
@@ -75,7 +76,7 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @return a map of user with the id as a key
      */
     @Override
-    public Map<String, UserSynchronization> findAllMap() {
+    public Map<String, Users> findAllMap() {
 
         return null;
     }
@@ -87,9 +88,9 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @return a map of user with the id as a key
      */
     @Override
-    public List<UserSynchronization> findAllByParameter(List<String> paramList) {
+    public List<Users> findAllByParameter(List<String> paramList) {
 
-        return userSynchronizationRepository.findAllById(paramList);
+        return userRepository.findAllById(paramList);
     }
 
     /**
@@ -99,9 +100,9 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @return an object of user synchronization or null if not found
      */
     @Override
-    public UserSynchronization findById(String id) {
+    public Users findById(String id) {
 
-        return userSynchronizationRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     /**
@@ -110,7 +111,7 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @param user the user to be updated
      */
     @Override
-    public void update(UserSynchronization user) {
+    public void update(Users user) {
 
         save(user);
     }
@@ -121,8 +122,8 @@ public class UserSynchronizationServiceImpl implements UserSynchronizationServic
      * @param user the user object to delete
      */
     @Override
-    public void delete(UserSynchronization user) {
+    public void delete(Users user) {
 
-        userSynchronizationRepository.delete(user);
+        userRepository.delete(user);
     }
 }

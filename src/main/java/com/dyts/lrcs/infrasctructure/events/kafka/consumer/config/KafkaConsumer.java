@@ -10,6 +10,8 @@
  */
 package com.dyts.lrcs.infrasctructure.events.kafka.consumer.config;
 
+import org.springframework.kafka.support.Acknowledgment;
+
 /**
  *  Interface that define the methods that should have a Kafka consumer concreted class
  *

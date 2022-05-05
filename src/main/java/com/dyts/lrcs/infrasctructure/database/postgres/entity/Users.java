@@ -32,7 +32,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "users", schema = "results")
-public class UserSynchronization implements Serializable {
+public class Users implements Serializable {
 
     /** the document identification id*/
     @Column(name = "dni")
