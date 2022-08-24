@@ -11,7 +11,7 @@
 package com.dyts.lrcs.managers;
 
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrastructure.database.postgres.entity.Users;
 
 import java.util.List;
 

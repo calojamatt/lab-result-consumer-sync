@@ -12,10 +12,10 @@ package com.dyts.lrcs.managers.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.UsersSynchronization;
-import com.dyts.lrcs.infrasctructure.services.postgres.api.UserService;
-import com.dyts.lrcs.infrasctructure.services.postgres.api.UserSynchronizationService;
+import com.dyts.lrcs.infrastructure.database.dynamodb.services.api.UserSynchronizationServiceDynamoDB;
+import com.dyts.lrcs.infrastructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrastructure.database.postgres.services.api.UserService;
+import com.dyts.lrcs.infrastructure.database.postgres.services.api.UserSynchronizationService;
 import com.dyts.lrcs.managers.UserSynchronizationManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +44,15 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
 
     private final UserSynchronizationService userSynchronizationService;
 
+    private final UserSynchronizationServiceDynamoDB userSynchronizationServiceDynamoDB;
+
     /** the converter for UserSynchronization */
     private final Converter<Users, UserSynchronizationDto> userSynchronizationConverter;
 
     /** used to transform Users into UsersSynchronization */
-    private final Converter<UsersSynchronization, Users> synchronizationUsersConverter;
+    private final Converter<com.dyts.lrcs.infrastructure.database.postgres.entity.UsersSynchronization, Users> synchronizationUsersConverter;
+
+    private final Converter<com.dyts.lrcs.infrastructure.database.dynamodb.datamodel.UsersSynchronization, Users> usersConverterDynamoDb;
 
     /**
      * take the UserSynchronization list get from postgres database and transform in a list of
@@ -87,7 +91,8 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
     public List<Users> synchronizeUser(List<Users> usersList) {
 
         try {
-            usersList = userService.saveAll(usersList);
+            userSynchronizationServiceDynamoDB.saveAll(usersConverterDynamoDb.convert(usersList));
+            // usersList = userService.saveAll(usersList);
             userSynchronizationService.saveAll(synchronizationUsersConverter.convert(usersList));
             log.info("User Synchronization process, users synchronized.");
             return usersList;

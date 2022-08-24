@@ -12,7 +12,7 @@ package com.dyts.lrcs.converters.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.ResultLabDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.ResultLab;
+import com.dyts.lrcs.infrastructure.database.postgres.entity.ResultLab;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

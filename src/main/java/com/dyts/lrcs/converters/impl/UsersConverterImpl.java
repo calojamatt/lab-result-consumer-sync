@@ -12,7 +12,7 @@ package com.dyts.lrcs.converters.impl;
 
 import com.dyts.lrcs.converters.api.Converter;
 import com.dyts.lrcs.dtos.UserSynchronizationDto;
-import com.dyts.lrcs.infrasctructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrastructure.database.postgres.entity.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
