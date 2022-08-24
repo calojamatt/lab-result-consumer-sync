@@ -10,8 +10,10 @@
  */
 package com.dyts.lrcs;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  *LabResultUserSyncApplication main class
@@ -26,6 +28,15 @@ public class LabResultConsumerSync {
 
     public static void main(String[] args) {
         SpringApplication.run(LabResultConsumerSync.class, args);
+    }
+
+    /**
+     * Object to inject the model mapper when required
+     * @return a ModelMapper object
+     * */
+    @Bean
+    public ModelMapper getModelMapper() {
+        return new ModelMapper();
     }
 
 }
