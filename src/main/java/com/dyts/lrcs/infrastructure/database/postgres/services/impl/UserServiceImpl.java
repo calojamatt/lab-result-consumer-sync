@@ -11,13 +11,19 @@
 package com.dyts.lrcs.infrastructure.database.postgres.services.impl;
 
 import com.dyts.lrcs.infrastructure.database.postgres.entity.Users;
+import com.dyts.lrcs.infrastructure.database.postgres.entity.UsersOldSchema;
+import com.dyts.lrcs.infrastructure.database.postgres.repository.UserOldSchemaRepository;
 import com.dyts.lrcs.infrastructure.database.postgres.repository.UserRepository;
 import com.dyts.lrcs.infrastructure.database.postgres.services.api.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class to implement the business logic of the redis UserSynchronization
@@ -27,12 +33,16 @@ import java.util.Map;
  * @created 26/06/21 12:22 p. m.
  * @since 1.0.0
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     /** the user repository */
     private final UserRepository userRepository;
+
+    /** to manage the user operation in the old table */
+    private final UserOldSchemaRepository userOldSchemaRepository;
 
     /**
      * persist an User to redis database
@@ -55,13 +65,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Users> saveAll(List<Users> usersList) {
 
+        // TODO remove when implementing new synchronization
+        final Date currentDate = new Date();
+        List<UsersOldSchema> usersOldSchemas = usersList.stream().map(users -> UsersOldSchema.builder()
+                .withPassword(users.getPassword())
+                .withUsername(users.getUsername())
+                .withDocumentType(users.getDocumentType())
+                .withName(users.getName())
+                .withLastName(users.getLastName())
+                .withEmail(users.getEmail())
+                .withState(users.getState())
+                .withRol(users.getRol())
+                .withCreateTime(new Timestamp(currentDate.getTime()))
+                .build()).collect(Collectors.toList());
+
+        usersOldSchemas = userOldSchemaRepository.saveAll(usersOldSchemas);
+        log.info("Users Synchronized in the old table, inserted rows {}", usersOldSchemas.size());
+
         return userRepository.saveAll(usersList);
     }
 
     /**
      * finds all User in redis database
      *
-     * @return a map of user with the id as a key
+     * @return a list of user with the id as a key
      */
     @Override
     public List<Users> findAll() {
@@ -84,7 +111,7 @@ public class UserServiceImpl implements UserService {
      * finds all User in redis database
      *
      * @param paramList the parameter list to search
-     * @return a map of user with the id as a key
+     * @return a list of user with the id as a key
      */
     @Override
     public List<Users> findAllByParameter(List<String> paramList) {
@@ -93,7 +120,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * finds an User in redis database
+     * finds a User in redis database
      *
      * @param id the id to find
      * @return an object of user synchronization or null if not found

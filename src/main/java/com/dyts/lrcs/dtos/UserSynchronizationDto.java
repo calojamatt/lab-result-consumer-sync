@@ -10,9 +10,7 @@
  */
 package com.dyts.lrcs.dtos;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -26,24 +24,25 @@ import java.io.Serializable;
  */
 @Builder(setterPrefix = "with")
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserSynchronizationDto implements Serializable {
 
     /** the document identification id*/
-    private final String dni;
+    private String dni;
 
     /** the document identification type*/
-    private final String dniType;
+    private String dniType;
 
     /** the patient first name */
-    private final String firstName;
+    private String firstName;
 
     /** the patient second name */
-    private final String lastName;
+    private String lastName;
 
     /** the patient email*/
-    private final String email;
+    private String email;
 
     /** the source of the message*/
-    private final String source;
+    private String source;
 }

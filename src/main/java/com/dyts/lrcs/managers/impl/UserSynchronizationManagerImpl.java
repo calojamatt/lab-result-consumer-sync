@@ -69,6 +69,7 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
 
         var usersToSave = userSynchronizationList.stream()
                 .map(user -> {
+                    log.trace("Validating user {}", user.getDni());
                     var userFound = userService.findById(user.getDni());
                     return Objects.isNull(userFound) ? user : null;
                 })
@@ -91,8 +92,8 @@ public class UserSynchronizationManagerImpl implements UserSynchronizationManage
     public List<Users> synchronizeUser(List<Users> usersList) {
 
         try {
+            userService.saveAll(usersList);
             userSynchronizationServiceDynamoDB.saveAll(usersConverterDynamoDb.convert(usersList));
-            // usersList = userService.saveAll(usersList);
             userSynchronizationService.saveAll(synchronizationUsersConverter.convert(usersList));
             log.info("User Synchronization process, users synchronized.");
             return usersList;
